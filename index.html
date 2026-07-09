@@ -3,929 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Client Onboarding · RapidXReviews</title>
+    <title>Client Onboarding · Raiseron</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
-    <style>
-        /* ============================================================
-              1. BACKGROUND LOGO SETUP
-              ============================================================ */
-        #bgLogo {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 55vw;
-            height: 55vh;
-            background-image: url('https://lh3.googleusercontent.com/d/1rAGf29V9AgS1bRzyN-UpXF0m7hQQlzKY');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 1;
-            z-index: 1;
-            pointer-events: none;
-            filter: blur(0px);
-        }
-
-        /* Dark overlay to make the glass card pop against the logo */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(115, 133, 174, 0.7), rgba(2, 6, 23, 0.9));
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* --- RESET & BASE --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            margin: 0;
-            background: #0b1120;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* --- MAIN GLASS CARD --- */
-        .wizard-card {
-            max-width: 720px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 32px;
-            padding: 40px 44px 32px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            position: relative;
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        .wizard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            border-radius: 32px 32px 0 0;
-        }
-
-        /* --- PROGRESS AREA --- */
-        .progress-area {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .step-indicator {
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.06);
-            padding: 4px 16px;
-            border-radius: 40px;
-            letter-spacing: 0.3px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .step-indicator span {
-            color: #ffffff;
-            font-weight: 700;
-        }
-
-        .progress-track {
-            width: 160px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #60a5fa, #3b82f6, #8b5cf6);
-            border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
-        }
-
-        /* --- Logo on welcome board --- */
-        .icon .brand-logo-icon {
-            width: 3em;  /* or whatever size the emoji was */
-            height: 3em;
-            object-fit: contain;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        /* --- STEPS WRAPPER --- */
-        .steps-wrapper {
-            position: relative;
-            min-height: 340px;
-        }
-
-        .step {
-            display: none;
-            animation: fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .step.active {
-            display: block;
-        }
-
-        @keyframes fadeSlide {
-            0% {
-                opacity: 0;
-                transform: translateY(18px) scale(0.97);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* Step header */
-        .step-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .step-icon {
-            font-size: 22px;
-            background: rgba(255, 255, 255, 0.04);
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 16px;
-            color: #93bbfc;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(4px);
-        }
-
-        .step-title-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .step-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.3px;
-        }
-        .step-desc {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-            margin-top: 2px;
-        }
-
-        /* --- FORM ELEMENTS (Glass) --- */
-        .field-group {
-            margin-top: 4px;
-        }
-
-        .field-group label {
-            display: block;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            margin-bottom: 6px;
-        }
-
-        .field-group input,
-        .field-group textarea {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            color: #ffffff;
-            font-size: 16px;
-            transition: 0.25s ease;
-            outline: none;
-            font-family: inherit;
-            backdrop-filter: blur(4px);
-        }
-
-        .field-group input:focus,
-        .field-group textarea:focus {
-            border-color: rgba(96, 165, 250, 0.5);
-            background: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-        }
-
-        .field-group input::placeholder,
-        .field-group textarea::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-            font-weight: 400;
-        }
-
-        .field-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        /* --- PHONE INPUT — FIXED: larger, numeric-friendly --- */
-        .phone-input-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: stretch;
-            flex-wrap: wrap;
-        }
-
-        .country-code-select {
-            padding: 14px 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            color: #ffffff;
-            font-size: 15px;
-            font-family: inherit;
-            outline: none;
-            cursor: pointer;
-            transition: 0.25s ease;
-            backdrop-filter: blur(4px);
-            min-width: 130px;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 32px;
-            flex: 0 0 auto;
-        }
-        .country-code-select:focus {
-            border-color: rgba(96, 165, 250, 0.5);
-            background-color: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-        }
-        .country-code-select option {
-            background: #1a2340;
-            color: #fff;
-        }
-
-        /* Phone number input — larger, better touch target */
-        .phone-number-input {
-            flex: 1 1 180px;
-            min-width: 140px;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            color: #ffffff;
-            font-size: 16px;
-            transition: 0.25s ease;
-            outline: none;
-            font-family: inherit;
-            backdrop-filter: blur(4px);
-            letter-spacing: 0.5px;
-        }
-        .phone-number-input:focus {
-            border-color: rgba(96, 165, 250, 0.5);
-            background: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-        }
-        .phone-number-input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-            font-weight: 400;
-        }
-
-        /* --- ERROR --- */
-        .field-error {
-            color: #f87171;
-            font-size: 13px;
-            font-weight: 500;
-            margin-top: 8px;
-            display: none;
-            align-items: center;
-            gap: 6px;
-        }
-        .field-error.show {
-            display: flex;
-            animation: shake 0.4s ease;
-        }
-        @keyframes shake {
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-            20% {
-                transform: translateX(-6px);
-            }
-            60% {
-                transform: translateX(6px);
-            }
-            80% {
-                transform: translateX(-3px);
-            }
-        }
-
-        /* --- FILE & CAMERA DROP ZONES (Glass) --- */
-        .file-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .drop-zone {
-            border: 1.5px dashed rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 24px 20px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.02);
-            transition: 0.25s ease;
-            position: relative;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-        }
-        .drop-zone:hover {
-            border-color: rgba(96, 165, 250, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .drop-zone .icon-big {
-            font-size: 30px;
-            display: block;
-            margin-bottom: 4px;
-            opacity: 0.8;
-        }
-        .drop-zone p {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-            pointer-events: none;
-        }
-        .drop-zone p strong {
-            color: rgba(255, 255, 255, 0.7);
-        }
-        .drop-zone input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-badge {
-            display: inline-block;
-            background: rgba(96, 165, 250, 0.12);
-            color: #93bbfc;
-            padding: 4px 16px;
-            border-radius: 40px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-top: 10px;
-            border: 1px solid rgba(96, 165, 250, 0.1);
-            word-break: break-all;
-        }
-
-        .drop-zone.optional {
-            border-style: solid;
-            border-color: rgba(255, 255, 255, 0.04);
-            background: rgba(255, 255, 255, 0.01);
-        }
-        .drop-zone.optional:hover {
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-
-        /* --- SUMMARY / REVIEW (Glass) --- */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px 20px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px 24px;
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(4px);
-        }
-
-        .summary-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .summary-item.full {
-            grid-column: 1 / -1;
-        }
-        .summary-item .s-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.25);
-            font-weight: 600;
-        }
-        .summary-item .s-value {
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 500;
-            margin-top: 2px;
-            word-break: break-word;
-        }
-        .summary-item .s-value.na {
-            color: rgba(255, 255, 255, 0.3);
-            font-weight: 400;
-        }
-
-        .confirm-notice {
-            margin-top: 18px;
-            padding: 12px 16px;
-            background: rgba(251, 191, 36, 0.06);
-            border-radius: 12px;
-            border-left: 4px solid #fbbf24;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #fcd34d;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* --- NAVIGATION BUTTONS --- */
-        .nav-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 32px;
-            gap: 16px;
-        }
-
-        .btn {
-            padding: 12px 28px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            letter-spacing: 0.2px;
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(4px);
-        }
-
-        .btn:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-        }
-        .btn:disabled {
-            opacity: 0.2;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            border-color: rgba(255, 255, 255, 0.06);
-        }
-        .btn-secondary:hover:not(:disabled) {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
-            border: none;
-        }
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.35);
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: #fff;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #059669, #0d9488);
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.25);
-            border: none;
-        }
-        .btn-success:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 30px rgba(5, 150, 105, 0.35);
-            background: linear-gradient(135deg, #10b981, #14b8a6);
-            color: #fff;
-        }
-
-        /* --- STATUS MESSAGE --- */
-        #statusMessage {
-            margin-top: 18px;
-            padding: 12px 18px;
-            border-radius: 14px;
-            display: none;
-            font-weight: 500;
-            text-align: center;
-            backdrop-filter: blur(8px);
-        }
-        #statusMessage.success {
-            display: block;
-            background: rgba(16, 185, 129, 0.1);
-            color: #6ee7b7;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        #statusMessage.error {
-            display: block;
-            background: rgba(239, 68, 68, 0.1);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* --- FIREWORKS CANVAS --- */
-        #fireworksCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 100001;
-            display: none;
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 600px) {
-            .wizard-card {
-                padding: 24px 18px;
-            }
-            .step-title {
-                font-size: 18px;
-            }
-            .summary-grid {
-                grid-template-columns: 1fr;
-                padding: 16px;
-            }
-            .nav-actions {
-                flex-wrap: wrap;
-            }
-            .btn {
-                flex: 1;
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-            .step-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            .progress-track {
-                width: 100px;
-            }
-            body::before {
-                width: 90vw;
-                height: 50vh;
-            }
-            .phone-input-wrapper {
-                flex-direction: column;
-            }
-            .country-code-select {
-                flex: 1 1 auto;
-                min-width: 100%;
-            }
-            .phone-number-input {
-                flex: 1 1 auto;
-                min-width: 100%;
-            }
-        }
-
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        /* ============================================================
-           INTRO SPLASH SCREEN
-           ============================================================ */
-        #introSplash {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #0b1120;
-            pointer-events: all;
-        }
-
-        #splashLogo {
-            width: 200px;
-            height: 200px;
-            background-image: url('https://lh3.googleusercontent.com/d/1rAGf29V9AgS1bRzyN-UpXF0m7hQQlzKY');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            animation: logoGrow 2.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            opacity: 0;
-        }
-
-        @keyframes logoGrow {
-            0% {
-                transform: scale(0.02);
-                opacity: 0;
-            }
-            40% {
-                opacity: 1;
-            }
-            75% {
-                transform: scale(1.08);
-                opacity: 1;
-            }
-            88% {
-                transform: scale(0.96);
-            }
-            100% {
-                transform: scale(2);
-                opacity: 1;
-            }
-        }
-
-        #splashTagline {
-            margin-top: 39px;
-            color: rgba(209, 209, 209, 0.995);
-            font-size: 25px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 400;
-            font-family: 'Playfair Display', Georgia, serif;
-            font-style: italic;
-            opacity: 0;
-            animation: fadeInTag 0.6s ease 1.6s forwards;
-        }
-
-        @keyframes fadeInTag {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* ============================================================
-           FORM ENTRY — zigzag water drop
-           ============================================================ */
-        @keyframes waterDrop {
-            0% {
-                transform: translateY(-120px) rotate(-3deg);
-                opacity: 0;
-            }
-            18% {
-                transform: translateY(18px) rotate(2.5deg);
-                opacity: 1;
-            }
-            34% {
-                transform: translateY(-12px) rotate(-2deg);
-            }
-            50% {
-                transform: translateY(7px) rotate(1.2deg);
-            }
-            65% {
-                transform: translateY(-4px) rotate(-0.7deg);
-            }
-            80% {
-                transform: translateY(2px) rotate(0.3deg);
-            }
-            100% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-        }
-
-        .wizard-card.drop-in {
-            animation: waterDrop 4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-        }
-
-        /* --- CONSENT BOX --- */
-        .consent-box {
-            margin-top: 4px;
-            padding: 20px 22px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1.5px solid rgba(255, 255, 255, 0.07);
-            border-radius: 18px;
-            backdrop-filter: blur(4px);
-        }
-        .consent-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 10px;
-            letter-spacing: 0.2px;
-        }
-        .consent-text {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.4);
-            line-height: 1.7;
-            margin-bottom: 16px;
-        }
-        .consent-check-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            cursor: pointer;
-        }
-        .consent-check-row input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            margin-top: 1px;
-            accent-color: #3b82f6;
-            cursor: pointer;
-        }
-        .consent-check-row span {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.5;
-        }
-        .consent-check-row span strong {
-            color: #ffffff;
-        }
-
-        /* ============================================================
-           SELECT OVERRIDES
-           ============================================================ */
-        .field-group select {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            color: #ffffff;
-            font-size: 16px;
-            transition: 0.25s ease;
-            outline: none;
-            font-family: inherit;
-            backdrop-filter: blur(4px);
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            padding-right: 40px;
-        }
-        .field-group select:focus {
-            border-color: rgba(96, 165, 250, 0.5);
-            background-color: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-        }
-        .field-group select option {
-            background: #1a2340;
-            color: #fff;
-        }
-
-        /* ============================================================
-           NEW: WELCOME OVERLAY (appears after successful submission)
-           ============================================================ */
-        #welcomeOverlay {
-            position: fixed;
-            inset: 0;
-            z-index: 100000;
-            display: none; /* hidden by default */
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            pointer-events: all;
-            animation: welcomeFadeIn 0.8s ease forwards;
-        }
-
-        #welcomeOverlay.show {
-            display: flex;
-        }
-
-        @keyframes welcomeFadeIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.96);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .welcome-card {
-            max-width: 600px;
-            width: 90%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 48px;
-            padding: 48px 40px 40px;
-            text-align: center;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            position: relative;
-        }
-
-        .welcome-card .icon {
-            font-size: 72px;
-            margin-bottom: 16px;
-            display: block;
-            animation: bounceIcon 1.2s infinite alternate;
-        }
-
-        @keyframes bounceIcon {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-12px);
-            }
-        }
-
-        .welcome-card h1 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 2.6rem;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-
-        .welcome-card h1 .highlight {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .welcome-card .sub {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            font-weight: 300;
-            margin-top: 8px;
-        }
-
-        .welcome-card .brand {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-top: 12px;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 1px;
-        }
-
-        .welcome-card .btn-close-welcome {
-            margin-top: 32px;
-            padding: 12px 40px;
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-            border: none;
-            border-radius: 40px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s ease;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
-        }
-
-        .welcome-card .btn-close-welcome:hover {
-            transform: scale(1.04);
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.5);
-        }
-
-        .welcome-card .ref-note {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.3);
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 16px;
-        }
-
-        @media (max-width: 600px) {
-            .welcome-card {
-                padding: 32px 20px;
-            }
-            .welcome-card h1 {
-                font-size: 2rem;
-            }
-            .welcome-card .brand {
-                font-size: 1.4rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -941,14 +21,14 @@
     <!-- FIREWORKS CANVAS -->
     <canvas id="fireworksCanvas"></canvas>
 
-    <!-- ===== NEW: WELCOME OVERLAY ===== -->
+    <!-- ===== WELCOME OVERLAY ===== -->
     <div id="welcomeOverlay">
         <div class="welcome-card">
             <span class="icon">
-                <img src="https://lh3.googleusercontent.com/d/1rAGf29V9AgS1bRzyN-UpXF0m7hQQlzKY" alt="RapidXReviews Logo" class="brand-logo-icon">
+                <img src="raiseron-logo.png" alt="Raiseron Logo" class="brand-logo-icon">
             </span>
             <h1>Welcome aboard, <span class="highlight" id="welcomeName">Guest</span>!</h1>
-            <div class="brand">✨ RapidXReviews ✨</div>
+            <div class="brand">✨ Raiseron ✨</div>
             <div class="sub">Your journey to stellar reviews starts now.</div>
             <button class="btn-close-welcome" id="closeWelcomeBtn">Continue &rarr;</button>
             <div class="ref-note" id="welcomeRef">Reference #: <span id="welcomeRefNumber">—</span></div>
@@ -976,7 +56,7 @@
                     </div>
                 </div>
                 <div class="field-group">
-                    <label>Primary Contact Name <span style="color:#f87171;">*</span></label>
+                    <label>Primary Contact Name <span class="required-star">*</span></label>
                     <input type="text" id="inputPrimaryContactName" placeholder="e.g. Sarah Mitchell" autofocus />
                     <div class="field-error" id="errPrimaryContactName">&#9888;&#65039; Please enter the primary contact name.</div>
                 </div>
@@ -996,13 +76,13 @@
                     </div>
                 </div>
                 <div class="field-group">
-                    <label>Business Owner Name <span style="color:#f87171;">*</span></label>
+                    <label>Business Owner Name <span class="required-star">*</span></label>
                     <input type="text" id="inputBusinessOwnerName" placeholder="e.g. James Thornton" autofocus />
                     <div class="field-error" id="errBusinessOwnerName">&#9888;&#65039; Please enter the business owner name.</div>
                 </div>
             </div>
 
-            <!-- Step 2: Contact Details — FIXED phone input -->
+            <!-- Step 2: Contact Details — with 10-digit phone validation -->
             <div class="step" data-step="2">
                 <div class="step-header">
                     <div class="step-icon">&#128236;</div>
@@ -1012,12 +92,12 @@
                     </div>
                 </div>
                 <div class="field-group">
-                    <label>Contact Email <span style="color:#f87171;">*</span></label>
+                    <label>Contact Email <span class="required-star">*</span></label>
                     <input type="email" id="inputContactEmail" placeholder="e.g. contact@yourbusiness.com" />
                     <div class="field-error" id="errContactEmail">&#9888;&#65039; Please enter a valid email address.</div>
                 </div>
                 <div class="field-group" style="margin-top:18px;">
-                    <label>Contact Phone <span style="color:#f87171;">*</span></label>
+                    <label>Contact Phone <span class="required-star">*</span> <span style="color:rgba(255,255,255,0.3);font-weight:400;font-size:12px;">(10 digits)</span></label>
                     <div class="phone-input-wrapper">
                         <select class="country-code-select" id="inputCountryCode">
                             <option value="+91">&#127470;&#127475; +91</option>
@@ -1065,822 +145,346 @@
                         placeholder="e.g. 9876543210"
                         inputmode="numeric"
                         pattern="[0-9]*"
-                    autocomplete="tel" />
+                        autocomplete="tel" />
+                    </div>
+                    <div class="field-error" id="errContactPhone">&#9888;&#65039; Please enter a valid 10-digit phone number.</div>
                 </div>
-                <div class="field-error" id="errContactPhone">&#9888;&#65039; Please enter a valid phone number (digits only).</div>
             </div>
+
+            <!-- Step 3: Business Information -->
+            <div class="step" data-step="3">
+                <div class="step-header">
+                    <div class="step-icon">&#127970;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Business Information</div>
+                        <div class="step-desc">Name, website, and year established</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Business Name <span class="required-star">*</span></label>
+                    <input type="text" id="inputBusinessName" placeholder="e.g. Thornton &amp; Co." />
+                    <div class="field-error" id="errBusinessName">&#9888;&#65039; Please enter the business name.</div>
+                </div>
+                <div class="field-group" style="margin-top:18px;">
+                    <label>Website URL</label>
+                    <input type="url" id="inputWebsiteUrl" placeholder="e.g. https://www.yourbusiness.com" />
+                </div>
+                <div class="field-group" style="margin-top:18px;">
+                    <label>Year Established <span class="required-star">*</span></label>
+                    <input type="number" id="inputYearEstablished" placeholder="e.g. 2012" min="1900" max="2099" />
+                    <div class="field-error" id="errYearEstablished">&#9888;&#65039; Please enter a valid year (1900-2099).</div>
+                </div>
+            </div>
+
+            <!-- Step 4: Locations & Branches -->
+            <div class="step" data-step="4">
+                <div class="step-header">
+                    <div class="step-icon">&#128205;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Locations &amp; Branches</div>
+                        <div class="step-desc">Where does the business operate?</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Branch Locations <span class="required-star">*</span></label>
+                    <textarea id="inputBranchLocations" placeholder="e.g. Downtown Mumbai, Andheri West, Bandra&#10;One per line or comma-separated"></textarea>
+                    <div class="field-error" id="errBranchLocations">&#9888;&#65039; Please enter at least one branch location.</div>
+                </div>
+                <div class="field-group" style="margin-top:18px;">
+                    <label>Number of Branches <span class="required-star">*</span></label>
+                    <input type="number" id="inputNumberOfBranches" placeholder="e.g. 3" min="1" />
+                    <div class="field-error" id="errNumberOfBranches">&#9888;&#65039; Please enter a valid number (minimum 1).</div>
+                </div>
+            </div>
+
+            <!-- Step 5: Staff -->
+            <div class="step" data-step="5">
+                <div class="step-header">
+                    <div class="step-icon">&#128101;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Staff Information</div>
+                        <div class="step-desc">Employee count and daily on-site staff names</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Number of Employees <span class="required-star">*</span></label>
+                    <input type="number" id="inputNumberOfEmployees" placeholder="e.g. 24" min="1" />
+                    <div class="field-error" id="errNumberOfEmployees">&#9888;&#65039; Please enter a valid employee count.</div>
+                </div>
+                <div class="field-group" style="margin-top:18px;">
+                    <label>Daily Staff Names</label>
+                    <textarea id="inputDailyStaffNames" placeholder="e.g. Mike Johnson, Priya Sharma, Raj Patel"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 6: Price Range -->
+            <div class="step" data-step="6">
+                <div class="step-header">
+                    <div class="step-icon">&#128176;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Price Range</div>
+                        <div class="step-desc">Typical starting price for products or services</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Price Range <span class="required-star">*</span></label>
+                    <input type="text" id="inputPriceRange" placeholder="e.g. &#8377;500 - &#8377;5,000 or $20 - $200" />
+                    <div class="field-error" id="errPriceRange">&#9888;&#65039; Please enter a price range.</div>
+                </div>
+            </div>
+
+            <!-- Step 7: Current Platforms -->
+            <div class="step" data-step="7">
+                <div class="step-header">
+                    <div class="step-icon">&#127760;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Current Platforms</div>
+                        <div class="step-desc">Where is the business currently listed online?</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Current Platforms <span class="required-star">*</span></label>
+                    <input type="text" id="inputCurrentPlatforms" placeholder="e.g. Google, Yelp, Zomato, TripAdvisor" />
+                    <div class="field-error" id="errCurrentPlatforms">&#9888;&#65039; Please list at least one platform.</div>
+                </div>
+                <div class="field-group" style="margin-top:18px;">
+                    <label>Profile URLs</label>
+                    <textarea id="inputProfileUrls" placeholder="Paste direct links to each listing profile&#10;e.g. https://g.co/maps/yourprofile"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 8: Review Performance -->
+            <div class="step" data-step="8">
+                <div class="step-header">
+                    <div class="step-icon">&#11088;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Current Review Performance</div>
+                        <div class="step-desc">Existing star rating and total review count</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Current Star Rating <span class="required-star">*</span></label>
+                    <input type="number" id="inputCurrentStarRating" placeholder="e.g. 4.2" min="1" max="5" step="0.1" />
+                    <div class="field-error" id="errCurrentStarRating">&#9888;&#65039; Please enter a rating between 1.0 and 5.0.</div>
+                </div>
+                <div class="field-group" style="margin-top:18px;">
+                    <label>Current Total Reviews <span class="required-star">*</span></label>
+                    <input type="number" id="inputCurrentTotalReviews" placeholder="e.g. 248" min="0" />
+                    <div class="field-error" id="errCurrentTotalReviews">&#9888;&#65039; Please enter the total number of reviews.</div>
+                </div>
+            </div>
+
+            <!-- Step 9: Target Platform -->
+            <div class="step" data-step="9">
+                <div class="step-header">
+                    <div class="step-icon">&#127919;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Target Platform</div>
+                        <div class="step-desc">Which platform should reviews be directed to?</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Target Platform <span class="required-star">*</span></label>
+                    <select id="inputTargetPlatform">
+                        <option value="" disabled selected>&#8212; Select a platform &#8212;</option>
+                        <option value="Google">Google</option>
+                        <option value="Yelp">Yelp</option>
+                        <option value="TripAdvisor">TripAdvisor</option>
+                        <option value="Zomato">Zomato</option>
+                        <option value="Swiggy">Swiggy</option>
+                        <option value="Amazon">Amazon</option>
+                        <option value="Trustpilot">Trustpilot</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Booking.com">Booking.com</option>
+                        <option value="G2">G2</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="field-error" id="errTargetPlatform">&#9888;&#65039; Please select a target platform.</div>
+                </div>
+            </div>
+
+            <!-- Step 10: Package Selection -->
+            <div class="step" data-step="10">
+                <div class="step-header">
+                    <div class="step-icon">&#128230;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Package Selection</div>
+                        <div class="step-desc">Which service package is the client signing up for?</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Selected Package <span class="required-star">*</span></label>
+                    <select id="inputPackageSelection">
+                        <option value="" disabled selected>&#8212; Select a package &#8212;</option>
+                        <option value="Starter">Starter</option>
+                        <option value="Growth">Growth</option>
+                        <option value="Professional">Professional</option>
+                        <option value="Enterprise">Enterprise</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                    <div class="field-error" id="errPackageSelection">&#9888;&#65039; Please select a package.</div>
+                </div>
+            </div>
+
+            <!-- Step 11: Attachments — Logo (optional) + Camera (required) + Menu (optional) -->
+            <div class="step" data-step="11">
+                <div class="step-header">
+                    <div class="step-icon">&#128206;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Attachments</div>
+                        <div class="step-desc">Upload logo (optional), take photos (required), and add supporting docs</div>
+                    </div>
+                </div>
+                <div class="file-grid">
+                    <!-- Logo (optional) -->
+                    <div class="drop-zone optional" id="logoDrop">
+                        <span class="icon-big">&#128444;&#65039;</span>
+                        <p><strong>Click or drag</strong> Logo (JPG, PNG, PDF) &#8212; <em style="color:rgba(255,255,255,0.3);">optional</em></p>
+                        <input type="file" id="fileLogo" accept=".jpg,.jpeg,.png,.gif,.pdf" />
+                        <div id="logoBadge" class="file-badge" style="display:none;">&#9989; Logo selected</div>
+                    </div>
+
+                    <!-- CAMERA — REQUIRED, supports multiple photos -->
+                    <div class="camera-upload-area" id="cameraDrop">
+                        <span class="icon-big">&#128247;</span>
+                        <label class="camera-btn" for="fileCamera">&#128247; Take Photo</label>
+                        <p class="camera-hint">Tap to open camera on your device · <span style="color:#f87171;">required</span></p>
+                        <input type="file" id="fileCamera" accept="image/*" capture="environment" />
+                    </div>
+
+                    <!-- Photo gallery -->
+                    <div id="photoGallery" class="photo-gallery"></div>
+                    <div class="photo-count">📸 <span class="highlight-count" id="photoCountNum">0</span> photo(s) taken</div>
+                    <div class="field-error" id="errCameraPhotos">&#9888;&#65039; Please take at least one photo.</div>
+
+                    <!-- Menu / Brochures (optional) -->
+                    <div class="drop-zone optional" id="menuDrop" style="margin-top:6px;">
+                        <span class="icon-big">&#128196;</span>
+                        <p><strong>Click or drag</strong> Menu / Brochures (up to 5 files) &#8212; optional</p>
+                        <input type="file" id="fileMenu" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx" multiple />
+                        <div id="menuBadge" class="file-badge" style="display:none;">&#9989; Files selected</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 12: Consent Form -->
+            <div class="step" data-step="12">
+                <div class="step-header">
+                    <div class="step-icon">&#128203;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Consent Form</div>
+                        <div class="step-desc">Please read and acknowledge before proceeding</div>
+                    </div>
+                </div>
+                <div class="consent-box">
+                    <div class="consent-title">Client Service Agreement</div>
+                    <div class="consent-text">
+TERMS AND CONDITIONS FOR AI REVIEW GENERATION SERVICES
+
+Last Updated: 01st July 2026
+Welcome to RpaidXReviews. By using our AI-powered review generation platform you agree to be bound by the following Terms and Conditions. Please read them carefully before proceeding. These Terms constitute a legally binding agreement between you and RpaidXReviews.
+
+The Service utilizes Artificial Intelligence (AI) to generate draft reviews and responses.
+	No Guarantee of Accuracy: You acknowledge and agree that AI technology is not infallible and may produce content that is factually incorrect, incomplete, or inappropriate.
+	Client Responsibility for Review: You are solely responsible for reviewing, editing, and verifying the accuracy of all AI-generated content before posting it to any social media platform, Google Reviews, or any other public forum.
+	Final Approval: You must manually approve each review. By clicking "Post" or "Publish," you confirm that you have read the content and accept full liability for the statements made therein.
+
+Client Responsibility and Liability
+Post-Approval Liability: Once a generated review is published by you, it is considered "Client-Approved." Raiseron bears no responsibility for the consequences of published content, including but not limited to defamation, copyright infringement, or violations of platform policies (e.g., Google’s Review Guidelines).
+Unread Reviews: It is your responsibility to monitor your notification settings and review queues. Any review that remains unread or unattended to, resulting in negative feedback or lost opportunities, is the Client's sole responsibility.
+
+Client Information and Data Verification
+Information Collection: To generate accurate content, you will provide us with information regarding your business, services, and clients.
+Email Confirmation: All information you provide will be sent to your registered email ID for confirmation.
+Duty to Verify: You are obligated to verify the accuracy of this information (e.g., business hours, address, service names). You confirm that all data submitted is correct.
+Post-Start Changes: Once work on your project has commenced, any request to change core business information (e.g., changing service descriptions, contact details, or branding) will be subject to additional administrative charges. This ensures our AI models are retrained and content is updated correctly.
+
+Fees and Payment
+One-Time Setup Fee: You agree to pay the one-time setup fee as displayed on the website at the time of purchase. This fee is non-refundable except as required by law.
+No Hidden Charges: The setup fee is inclusive of the initial onboarding and configuration.
+Default:  Failure to pay the required fees on time may result in the suspension or termination of your access to the platform.
+
+Service Modification and Upgrades
+We are constantly improving our technology. While we strive to maintain core functionality, we reserve the right to modify, update, or discontinue certain features of the Service with reasonable notice to you.
+
+Intellectual Property
+Your Content: You retain ownership of the final text you publish. However, you grant us a non-exclusive license to use the data you provide to improve our AI algorithms.
+Our Platform: Our website, software, code, and proprietary algorithms are the exclusive property of Raiseron. You may not copy, reverse engineer, or distribute our software.
+
+Data Privacy
+We respect your privacy. We will not sell or share your business data with third parties except as necessary to provide the Service (e.g., AI processing vendors) or as required by law.
+
+Limitation of Liability
+To the fullest extent permitted by law, Raiseron shall not be liable for any indirect, incidental, special, or consequential damages. Our total liability to you for any claims arising out of these Terms shall be limited to the total amount you paid for the Service in the preceding six (6) months.
+
+Indemnification
+You agree to defend and indemnify Raiseron and its affiliates against any claims, damages, losses, or expenses (including legal fees) arising out of:
+	Your misuse of the Service.
+	The content you publish.
+	Your breach of these Terms or violation of third-party rights.
+
+Termination
+By Client:  You may cancel your account at any time by sending a written request. No refunds will be issued for unused services.
+By Us:  We reserve the right to suspend or terminate your access if we suspect fraudulent activity, violation of these terms, or misuse of our AI technology.
+
+Force Majeure
+We shall not be liable for any failure to perform our obligations if such failure is a result of events beyond our reasonable control, including but not limited to internet outages, strikes, or governmental actions.
+
+Entire Agreement
+These Terms constitute the entire agreement between you and Raiseron regarding the use of the Service and supersede all prior agreements or understandings.
+
+Governing Law
+These Terms shall be governed by and construed in accordance with the laws of GUJARAT/INDIA , without regard to its conflict of laws principles.
+
+ Consent Acknowledgment
+By checking the box below, I confirm that:
+
+1. I have read and understand these Terms and Conditions.
+2. I acknowledge that AI-generated reviews require *my careful review* and I am solely responsible for them.
+3. I accept the *one-time setup fee* as disclosed on the website.
+4. I am responsible for verifying my data via email.
+5. I agree to *extra charges* if I request changes after work has commenced.
+6. I agree to be bound by all terms outlined above.
+
+*Signature:* ____________
+
+*Date:* ____________
+                    </div>
+                    <label class="consent-check-row">
+                        <input type="checkbox" id="inputConsentCheck" />
+                        <span>I have read, understood, and agree to the above terms. I authorise Raiseron to proceed with the selected package on behalf of <strong id="consentBusinessLabel">my business</strong>.</span>
+                    </label>
+                </div>
+                <div class="field-error" id="errConsent" style="margin-top:14px;">&#9888;&#65039; You must agree to the consent form to proceed.</div>
+            </div>
+
+            <!-- Step 13: Review & Submit -->
+            <div class="step" data-step="13">
+                <div class="step-header">
+                    <div class="step-icon">&#9989;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Review &amp; Confirm</div>
+                        <div class="step-desc">Verify all details before final submission</div>
+                    </div>
+                </div>
+                <div class="summary-grid" id="summaryGrid"></div>
+                <div class="confirm-notice">
+                    <span>&#9888;&#65039;</span> Please confirm all information is accurate. You cannot edit after submitting.
+                </div>
+            </div>
+
         </div>
 
-        <!-- Step 3: Business Information -->
-        <div class="step" data-step="3">
-            <div class="step-header">
-                <div class="step-icon">&#127970;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Business Information</div>
-                    <div class="step-desc">Name, website, and year established</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Business Name <span style="color:#f87171;">*</span></label>
-                <input type="text" id="inputBusinessName" placeholder="e.g. Thornton &amp; Co." />
-                <div class="field-error" id="errBusinessName">&#9888;&#65039; Please enter the business name.</div>
-            </div>
-            <div class="field-group" style="margin-top:18px;">
-                <label>Website URL</label>
-                <input type="url" id="inputWebsiteUrl" placeholder="e.g. https://www.yourbusiness.com" />
-            </div>
-            <div class="field-group" style="margin-top:18px;">
-                <label>Year Established <span style="color:#f87171;">*</span></label>
-                <input type="number" id="inputYearEstablished" placeholder="e.g. 2012" min="1900" max="2099" />
-                <div class="field-error" id="errYearEstablished">&#9888;&#65039; Please enter a valid year (1900-2099).</div>
-            </div>
+        <div class="nav-actions" id="navActions">
+            <button class="btn btn-secondary" id="prevBtn" disabled>&#8592; Back</button>
+            <button class="btn btn-primary" id="nextBtn">Next &#8594;</button>
+            <button class="btn btn-success" id="submitBtn" style="display:none;">&#128640; Confirm &amp; Submit</button>
         </div>
 
-        <!-- Step 4: Locations & Branches -->
-        <div class="step" data-step="4">
-            <div class="step-header">
-                <div class="step-icon">&#128205;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Locations &amp; Branches</div>
-                    <div class="step-desc">Where does the business operate?</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Branch Locations <span style="color:#f87171;">*</span></label>
-                <textarea id="inputBranchLocations" placeholder="e.g. Downtown Mumbai, Andheri West, Bandra&#10;One per line or comma-separated"></textarea>
-                <div class="field-error" id="errBranchLocations">&#9888;&#65039; Please enter at least one branch location.</div>
-            </div>
-            <div class="field-group" style="margin-top:18px;">
-                <label>Number of Branches <span style="color:#f87171;">*</span></label>
-                <input type="number" id="inputNumberOfBranches" placeholder="e.g. 3" min="1" />
-                <div class="field-error" id="errNumberOfBranches">&#9888;&#65039; Please enter a valid number (minimum 1).</div>
-            </div>
-        </div>
-
-        <!-- Step 5: Staff -->
-        <div class="step" data-step="5">
-            <div class="step-header">
-                <div class="step-icon">&#128101;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Staff Information</div>
-                    <div class="step-desc">Employee count and daily on-site staff names</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Number of Employees <span style="color:#f87171;">*</span></label>
-                <input type="number" id="inputNumberOfEmployees" placeholder="e.g. 24" min="1" />
-                <div class="field-error" id="errNumberOfEmployees">&#9888;&#65039; Please enter a valid employee count.</div>
-            </div>
-            <div class="field-group" style="margin-top:18px;">
-                <label>Daily Staff Names</label>
-                <textarea id="inputDailyStaffNames" placeholder="e.g. Mike Johnson, Priya Sharma, Raj Patel"></textarea>
-            </div>
-        </div>
-
-        <!-- Step 6: Price Range -->
-        <div class="step" data-step="6">
-            <div class="step-header">
-                <div class="step-icon">&#128176;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Price Range</div>
-                    <div class="step-desc">Typical starting price for products or services</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Price Range <span style="color:#f87171;">*</span></label>
-                <input type="text" id="inputPriceRange" placeholder="e.g. &#8377;500 - &#8377;5,000 or $20 - $200" />
-                <div class="field-error" id="errPriceRange">&#9888;&#65039; Please enter a price range.</div>
-            </div>
-        </div>
-
-        <!-- Step 7: Current Platforms -->
-        <div class="step" data-step="7">
-            <div class="step-header">
-                <div class="step-icon">&#127760;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Current Platforms</div>
-                    <div class="step-desc">Where is the business currently listed online?</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Current Platforms <span style="color:#f87171;">*</span></label>
-                <input type="text" id="inputCurrentPlatforms" placeholder="e.g. Google, Yelp, Zomato, TripAdvisor" />
-                <div class="field-error" id="errCurrentPlatforms">&#9888;&#65039; Please list at least one platform.</div>
-            </div>
-            <div class="field-group" style="margin-top:18px;">
-                <label>Profile URLs</label>
-                <textarea id="inputProfileUrls" placeholder="Paste direct links to each listing profile&#10;e.g. https://g.co/maps/yourprofile"></textarea>
-            </div>
-        </div>
-
-        <!-- Step 8: Review Performance -->
-        <div class="step" data-step="8">
-            <div class="step-header">
-                <div class="step-icon">&#11088;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Current Review Performance</div>
-                    <div class="step-desc">Existing star rating and total review count</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Current Star Rating <span style="color:#f87171;">*</span></label>
-                <input type="number" id="inputCurrentStarRating" placeholder="e.g. 4.2" min="1" max="5" step="0.1" />
-                <div class="field-error" id="errCurrentStarRating">&#9888;&#65039; Please enter a rating between 1.0 and 5.0.</div>
-            </div>
-            <div class="field-group" style="margin-top:18px;">
-                <label>Current Total Reviews <span style="color:#f87171;">*</span></label>
-                <input type="number" id="inputCurrentTotalReviews" placeholder="e.g. 248" min="0" />
-                <div class="field-error" id="errCurrentTotalReviews">&#9888;&#65039; Please enter the total number of reviews.</div>
-            </div>
-        </div>
-
-        <!-- Step 9: Target Platform -->
-        <div class="step" data-step="9">
-            <div class="step-header">
-                <div class="step-icon">&#127919;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Target Platform</div>
-                    <div class="step-desc">Which platform should reviews be directed to?</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Target Platform <span style="color:#f87171;">*</span></label>
-                <select id="inputTargetPlatform">
-                    <option value="" disabled selected>&#8212; Select a platform &#8212;</option>
-                    <option value="Google">Google</option>
-                    <option value="Yelp">Yelp</option>
-                    <option value="TripAdvisor">TripAdvisor</option>
-                    <option value="Zomato">Zomato</option>
-                    <option value="Swiggy">Swiggy</option>
-                    <option value="Amazon">Amazon</option>
-                    <option value="Trustpilot">Trustpilot</option>
-                    <option value="Facebook">Facebook</option>
-                    <option value="Booking.com">Booking.com</option>
-                    <option value="G2">G2</option>
-                    <option value="Other">Other</option>
-                </select>
-                <div class="field-error" id="errTargetPlatform">&#9888;&#65039; Please select a target platform.</div>
-            </div>
-        </div>
-
-        <!-- Step 10: Package Selection -->
-        <div class="step" data-step="10">
-            <div class="step-header">
-                <div class="step-icon">&#128230;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Package Selection</div>
-                    <div class="step-desc">Which service package is the client signing up for?</div>
-                </div>
-            </div>
-            <div class="field-group">
-                <label>Selected Package <span style="color:#f87171;">*</span></label>
-                <select id="inputPackageSelection">
-                    <option value="" disabled selected>&#8212; Select a package &#8212;</option>
-                    <option value="Starter">Starter</option>
-                    <option value="Growth">Growth</option>
-                    <option value="Professional">Professional</option>
-                    <option value="Enterprise">Enterprise</option>
-                    <option value="Custom">Custom</option>
-                </select>
-                <div class="field-error" id="errPackageSelection">&#9888;&#65039; Please select a package.</div>
-            </div>
-        </div>
-
-        <!-- Step 11: Attachments — CAMERA ADDED BACK (from v2) -->
-        <div class="step" data-step="11">
-            <div class="step-header">
-                <div class="step-icon">&#128206;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Attachments</div>
-                    <div class="step-desc">Upload Logo (required), supporting docs, or take a photo</div>
-                </div>
-            </div>
-            <div class="file-grid">
-                <!-- Logo (required) -->
-                <div class="drop-zone" id="logoDrop">
-                    <span class="icon-big">&#128444;&#65039;</span>
-                    <p><strong>Click or drag</strong> Logo (JPG, PNG, PDF) &#8212; <em style="color:#f87171;">required</em></p>
-                    <input type="file" id="fileLogo" accept=".jpg,.jpeg,.png,.gif,.pdf" />
-                    <div id="logoBadge" class="file-badge" style="display:none;">&#9989; Logo selected</div>
-                </div>
-
-                <!-- Menu / Brochures (optional) -->
-                <div class="drop-zone" id="menuDrop">
-                    <span class="icon-big">&#128196;</span>
-                    <p><strong>Click or drag</strong> Menu / Brochures (up to 5 files) &#8212; optional</p>
-                    <input type="file" id="fileMenu" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx" multiple />
-                    <div id="menuBadge" class="file-badge" style="display:none;">&#9989; Files selected</div>
-                </div>
-
-                <!-- CAMERA — added back from v2 (optional) -->
-                <div class="drop-zone optional" id="cameraDrop">
-                    <span class="icon-big">&#128247;</span>
-                    <p><strong>Take a Photo</strong> (Optional — opens camera on mobile)</p>
-                    <input type="file" id="fileCamera" accept="image/*" capture="environment" />
-                    <div id="cameraBadge" class="file-badge" style="display:none;">&#128247; Photo captured</div>
-                </div>
-            </div>
-            <div class="field-error" id="errFiles" style="margin-top:14px;">&#9888;&#65039; Please upload at least the business logo.</div>
-        </div>
-
-        <!-- Step 12: Consent Form -->
-        <div class="step" data-step="12">
-            <div class="step-header">
-                <div class="step-icon">&#128203;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Consent Form</div>
-                    <div class="step-desc">Please read and acknowledge before proceeding</div>
-                </div>
-            </div>
-            <div class="consent-box">
-                <div class="consent-title">Client Service Agreement</div>
-                <div class="consent-text">
-                    By signing this consent form, you authorise RapidXReviews to act on behalf of your business in managing, responding to, and soliciting online reviews across agreed-upon platforms. You confirm that all information provided in this form is accurate and complete. You understand that results may vary and that RapidXReviews will operate strictly within the guidelines of each platform's terms of service. All data collected through this form will be handled with full confidentiality and used solely for the purpose of delivering the agreed services.
-                </div>
-                <label class="consent-check-row">
-                    <input type="checkbox" id="inputConsentCheck" />
-                    <span>I have read, understood, and agree to the above terms. I authorise RapidXReviews to proceed with the selected package on behalf of <strong id="consentBusinessLabel">my business</strong>.</span>
-                </label>
-            </div>
-            <div class="field-error" id="errConsent" style="margin-top:14px;">&#9888;&#65039; You must agree to the consent form to proceed.</div>
-        </div>
-
-        <!-- Step 13: Review & Submit -->
-        <div class="step" data-step="13">
-            <div class="step-header">
-                <div class="step-icon">&#9989;</div>
-                <div class="step-title-group">
-                    <div class="step-title">Review &amp; Confirm</div>
-                    <div class="step-desc">Verify all details before final submission</div>
-                </div>
-            </div>
-            <div class="summary-grid" id="summaryGrid"></div>
-            <div class="confirm-notice">
-                <span>&#9888;&#65039;</span> Please confirm all information is accurate. You cannot edit after submitting.
-            </div>
-        </div>
-
+        <div id="statusMessage"></div>
     </div>
 
-    <div class="nav-actions">
-        <button class="btn btn-secondary" id="prevBtn" disabled>&#8592; Back</button>
-        <button class="btn btn-primary" id="nextBtn">Next &#8594;</button>
-        <button class="btn btn-success" id="submitBtn" style="display:none;">&#128640; Confirm &amp; Submit</button>
-    </div>
+    <script src="script.js"></script>
 
-    <div id="statusMessage"></div>
-</div>
-
-<script>
-    const TOTAL_STEPS = 14;
-    const state = {
-        currentStep: 0,
-        totalSteps: TOTAL_STEPS,
-        data: {
-            primary_contact_name: '',
-            primary_contact_title: '',
-            business_owner_name: '',
-            contact_email: '',
-            contact_phone: '',
-            country_code: '+91',
-            business_name: '',
-            website_url: '',
-            year_established: '',
-            branch_locations: '',
-            number_of_branches: '',
-            number_of_employees: '',
-            daily_staff_names: '',
-            price_range: '',
-            current_platforms: '',
-            profile_urls: '',
-            current_star_rating: '',
-            current_total_reviews: '',
-            target_platform: '',
-            package_selection: '',
-            consent: false
-        },
-        files: { logo: null, menu: [], cameraPhoto: null }
-    };
-
-    const steps = document.querySelectorAll('.step');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    const progressFill = document.getElementById('progressFill');
-    const currentStepNum = document.getElementById('currentStepNum');
-    const totalStepsNum = document.getElementById('totalStepsNum');
-    const statusMsg = document.getElementById('statusMessage');
-    const summaryGrid = document.getElementById('summaryGrid');
-    const fileLogo = document.getElementById('fileLogo');
-    const fileMenu = document.getElementById('fileMenu');
-    const fileCamera = document.getElementById('fileCamera');
-    const logoBadge = document.getElementById('logoBadge');
-    const menuBadge = document.getElementById('menuBadge');
-    const cameraBadge = document.getElementById('cameraBadge');
-    const consentBusinessLabel = document.getElementById('consentBusinessLabel');
-
-    // NEW: welcome overlay elements
-    const welcomeOverlay = document.getElementById('welcomeOverlay');
-    const welcomeName = document.getElementById('welcomeName');
-    const welcomeRefNumber = document.getElementById('welcomeRefNumber');
-    const closeWelcomeBtn = document.getElementById('closeWelcomeBtn');
-
-    const inputs = {
-        primaryContactName: document.getElementById('inputPrimaryContactName'),
-        primaryContactTitle: document.getElementById('inputPrimaryContactTitle'),
-        businessOwnerName: document.getElementById('inputBusinessOwnerName'),
-        contactEmail: document.getElementById('inputContactEmail'),
-        contactPhone: document.getElementById('inputContactPhone'),
-        countryCode: document.getElementById('inputCountryCode'),
-        businessName: document.getElementById('inputBusinessName'),
-        websiteUrl: document.getElementById('inputWebsiteUrl'),
-        yearEstablished: document.getElementById('inputYearEstablished'),
-        branchLocations: document.getElementById('inputBranchLocations'),
-        numberOfBranches: document.getElementById('inputNumberOfBranches'),
-        numberOfEmployees: document.getElementById('inputNumberOfEmployees'),
-        dailyStaffNames: document.getElementById('inputDailyStaffNames'),
-        priceRange: document.getElementById('inputPriceRange'),
-        currentPlatforms: document.getElementById('inputCurrentPlatforms'),
-        profileUrls: document.getElementById('inputProfileUrls'),
-        currentStarRating: document.getElementById('inputCurrentStarRating'),
-        currentTotalReviews: document.getElementById('inputCurrentTotalReviews'),
-        targetPlatform: document.getElementById('inputTargetPlatform'),
-        packageSelection: document.getElementById('inputPackageSelection'),
-        consentCheck: document.getElementById('inputConsentCheck')
-    };
-
-    const errEls = {
-        primaryContactName: document.getElementById('errPrimaryContactName'),
-        businessOwnerName: document.getElementById('errBusinessOwnerName'),
-        contactEmail: document.getElementById('errContactEmail'),
-        contactPhone: document.getElementById('errContactPhone'),
-        businessName: document.getElementById('errBusinessName'),
-        yearEstablished: document.getElementById('errYearEstablished'),
-        branchLocations: document.getElementById('errBranchLocations'),
-        numberOfBranches: document.getElementById('errNumberOfBranches'),
-        numberOfEmployees: document.getElementById('errNumberOfEmployees'),
-        priceRange: document.getElementById('errPriceRange'),
-        currentPlatforms: document.getElementById('errCurrentPlatforms'),
-        currentStarRating: document.getElementById('errCurrentStarRating'),
-        currentTotalReviews: document.getElementById('errCurrentTotalReviews'),
-        targetPlatform: document.getElementById('errTargetPlatform'),
-        packageSelection: document.getElementById('errPackageSelection'),
-        files: document.getElementById('errFiles'),
-        consent: document.getElementById('errConsent')
-    };
-
-    totalStepsNum.textContent = TOTAL_STEPS;
-
-    function hideAllErrors() { Object.values(errEls).forEach(el => el.classList.remove('show')); }
-
-    function validateStep(i) {
-        hideAllErrors();
-        let ok = true;
-        switch (i) {
-            case 0:
-                if (!inputs.primaryContactName.value.trim()) { errEls.primaryContactName.classList.add('show');
-                    ok = false; }
-                break;
-            case 1:
-                if (!inputs.businessOwnerName.value.trim()) { errEls.businessOwnerName.classList.add('show');
-                    ok = false; }
-                break;
-            case 2:
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.contactEmail.value.trim())) { errEls.contactEmail
-                        .classList.add('show');
-                    ok = false; }
-                if (!/^\d{5,15}$/.test(inputs.contactPhone.value.trim())) { errEls.contactPhone.classList.add('show');
-                    ok = false; }
-                break;
-            case 3:
-                if (!inputs.businessName.value.trim()) { errEls.businessName.classList.add('show');
-                    ok = false; }
-                const yr = parseInt(inputs.yearEstablished.value);
-                if (!inputs.yearEstablished.value.trim() || yr < 1900 || yr > 2099) { errEls.yearEstablished.classList
-                        .add('show');
-                    ok = false; }
-                break;
-            case 4:
-                if (!inputs.branchLocations.value.trim()) { errEls.branchLocations.classList.add('show');
-                    ok = false; }
-                if (!inputs.numberOfBranches.value.trim() || parseInt(inputs.numberOfBranches.value) < 1) { errEls
-                        .numberOfBranches.classList.add('show');
-                    ok = false; }
-                break;
-            case 5:
-                if (!inputs.numberOfEmployees.value.trim() || parseInt(inputs.numberOfEmployees.value) < 1) { errEls
-                        .numberOfEmployees.classList.add('show');
-                    ok = false; }
-                break;
-            case 6:
-                if (!inputs.priceRange.value.trim()) { errEls.priceRange.classList.add('show');
-                    ok = false; }
-                break;
-            case 7:
-                if (!inputs.currentPlatforms.value.trim()) { errEls.currentPlatforms.classList.add('show');
-                    ok = false; }
-                break;
-            case 8:
-                const rating = parseFloat(inputs.currentStarRating.value);
-                if (!inputs.currentStarRating.value || rating < 1 || rating > 5) { errEls.currentStarRating.classList
-                        .add('show');
-                    ok = false; }
-                if (!inputs.currentTotalReviews.value.trim() || parseInt(inputs.currentTotalReviews.value) < 0) { errEls
-                        .currentTotalReviews.classList.add('show');
-                    ok = false; }
-                break;
-            case 9:
-                if (!inputs.targetPlatform.value) { errEls.targetPlatform.classList.add('show');
-                    ok = false; }
-                break;
-            case 10:
-                if (!inputs.packageSelection.value) { errEls.packageSelection.classList.add('show');
-                    ok = false; }
-                break;
-            case 11:
-                if (!state.files.logo) { errEls.files.classList.add('show');
-                    ok = false; }
-                break;
-            case 12:
-                if (!inputs.consentCheck.checked) { errEls.consent.classList.add('show');
-                    ok = false; }
-                break;
-        }
-        return ok;
-    }
-
-    function saveCurrentData() {
-        state.data.primary_contact_name = inputs.primaryContactName.value.trim();
-        state.data.primary_contact_title = inputs.primaryContactTitle.value.trim();
-        state.data.business_owner_name = inputs.businessOwnerName.value.trim();
-        state.data.contact_email = inputs.contactEmail.value.trim();
-        state.data.contact_phone = inputs.contactPhone.value.trim();
-        state.data.country_code = inputs.countryCode.value;
-        state.data.business_name = inputs.businessName.value.trim();
-        state.data.website_url = inputs.websiteUrl.value.trim();
-        state.data.year_established = inputs.yearEstablished.value.trim();
-        state.data.branch_locations = inputs.branchLocations.value.trim();
-        state.data.number_of_branches = inputs.numberOfBranches.value.trim();
-        state.data.number_of_employees = inputs.numberOfEmployees.value.trim();
-        state.data.daily_staff_names = inputs.dailyStaffNames.value.trim();
-        state.data.price_range = inputs.priceRange.value.trim();
-        state.data.current_platforms = inputs.currentPlatforms.value.trim();
-        state.data.profile_urls = inputs.profileUrls.value.trim();
-        state.data.current_star_rating = inputs.currentStarRating.value.trim();
-        state.data.current_total_reviews = inputs.currentTotalReviews.value.trim();
-        state.data.target_platform = inputs.targetPlatform.value;
-        state.data.package_selection = inputs.packageSelection.value;
-        state.data.consent = inputs.consentCheck.checked;
-    }
-
-    function renderSummary() {
-        const d = state.data;
-        const fields = [
-            { label: 'Primary Contact Name', value: d.primary_contact_name },
-            { label: 'Primary Contact Title', value: d.primary_contact_title || '\u2014' },
-            { label: 'Business Owner', value: d.business_owner_name },
-            { label: 'Contact Email', value: d.contact_email },
-            { label: 'Contact Phone', value: d.contact_phone ? d.country_code + ' ' + d.contact_phone : '\u2014' },
-            { label: 'Business Name', value: d.business_name },
-            { label: 'Website URL', value: d.website_url || '\u2014', full: true },
-            { label: 'Year Established', value: d.year_established },
-            { label: 'Branch Locations', value: d.branch_locations, full: true },
-            { label: 'Number of Branches', value: d.number_of_branches },
-            { label: 'Number of Employees', value: d.number_of_employees },
-            { label: 'Daily Staff Names', value: d.daily_staff_names || '\u2014', full: true },
-            { label: 'Price Range', value: d.price_range },
-            { label: 'Current Platforms', value: d.current_platforms },
-            { label: 'Profile URLs', value: d.profile_urls || '\u2014', full: true },
-            { label: 'Current Star Rating', value: d.current_star_rating ? d.current_star_rating + ' \u2605' :
-                    '\u2014' },
-            { label: 'Total Reviews', value: d.current_total_reviews },
-            { label: 'Target Platform', value: d.target_platform },
-            { label: 'Package Selected', value: d.package_selection },
-            { label: 'Consent Signed', value: d.consent ? '\u2705 Agreed' : '\u274C Not signed' },
-            { label: 'Logo', value: state.files.logo ? state.files.logo.name : '\u274C Not uploaded' },
-            { label: 'Supporting Documents', value: state.files.menu.length > 0 ? state.files.menu.map(f => f.name)
-                    .join(', ') : 'None uploaded', full: true },
-            { label: 'Camera Photo', value: state.files.cameraPhoto ? state.files.cameraPhoto.name :
-                    'None taken' }
-        ];
-        summaryGrid.innerHTML = fields.map(f =>
-            '<div class="summary-item ' + (f.full ? 'full' : '') + '">' +
-            '<span class="s-label">' + f.label + '</span>' +
-            '<span class="s-value ' + (!f.value || f.value === '\u2014' || f.value === 'None uploaded' || f
-                .value === 'None taken' ? 'na' : '') + '">' + f.value + '</span>' +
-            '</div>'
-        ).join('');
-    }
-
-    function goToStep(index) {
-        if (index < 0 || index >= state.totalSteps) return;
-        if (index > state.currentStep) {
-            if (!validateStep(state.currentStep)) return;
-            saveCurrentData();
-            if (state.data.business_name) consentBusinessLabel.textContent = state.data.business_name;
-        } else {
-            saveCurrentData();
-        }
-        state.currentStep = index;
-        steps.forEach((el, i) => el.classList.toggle('active', i === index));
-        const progress = (index / (state.totalSteps - 1)) * 100;
-        progressFill.style.width = progress + '%';
-        currentStepNum.textContent = index + 1;
-        prevBtn.disabled = index === 0;
-        if (index === state.totalSteps - 1) {
-            nextBtn.style.display = 'none';
-            submitBtn.style.display = 'flex';
-            renderSummary();
-            setTimeout(() => submitBtn.focus(), 100);
-        } else {
-            nextBtn.style.display = 'flex';
-            submitBtn.style.display = 'none';
-            const inp = steps[index].querySelector('input, textarea, select');
-            if (inp) setTimeout(() => inp.focus(), 150);
-        }
-        statusMsg.className = '';
-        statusMsg.style.display = 'none';
-        statusMsg.textContent = '';
-    }
-
-    nextBtn.addEventListener('click', () => goToStep(state.currentStep + 1));
-    prevBtn.addEventListener('click', () => goToStep(state.currentStep - 1));
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
-            if (state.currentStep === state.totalSteps - 1 && submitBtn.style.display !== 'none') submitBtn.click();
-            else if (state.currentStep < state.totalSteps - 1) nextBtn.click();
-        }
-    });
-
-    // -- File: Logo --
-    fileLogo.addEventListener('change', e => {
-        if (e.target.files.length > 0) {
-            state.files.logo = e.target.files[0];
-            logoBadge.style.display = 'inline-block';
-            logoBadge.textContent = '\u2705 ' + state.files.logo.name;
-            errEls.files.classList.remove('show');
-        } else { state.files.logo = null;
-            logoBadge.style.display = 'none'; }
-    });
-
-    // -- File: Menu --
-    fileMenu.addEventListener('change', e => {
-        if (e.target.files.length > 0) {
-            state.files.menu = Array.from(e.target.files);
-            menuBadge.style.display = 'inline-block';
-            menuBadge.textContent = '\u2705 ' + state.files.menu.length + ' file(s) selected';
-        } else { state.files.menu = [];
-            menuBadge.style.display = 'none'; }
-    });
-
-    // -- File: Camera (added from v2) --
-    fileCamera.addEventListener('change', e => {
-        if (e.target.files.length > 0) {
-            state.files.cameraPhoto = e.target.files[0];
-            cameraBadge.style.display = 'inline-block';
-            cameraBadge.textContent = '\uD83D\uDCF8 ' + state.files.cameraPhoto.name;
-        } else {
-            state.files.cameraPhoto = null;
-            cameraBadge.style.display = 'none';
-        }
-    });
-
-    const ONBOARDING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJB8uPxbDyWD4_cR2ZVBBI5_pZYiHLRrlB6lHeQXM6BLS54dgGrzoKKZ86E1GHhyRk4g/exec';
-
-    // Splash + water-drop
-    const splash = document.getElementById('introSplash');
-    const wizardCard = document.getElementById('app');
-    wizardCard.style.opacity = '0';
-    wizardCard.style.pointerEvents = 'none';
-    setTimeout(() => {
-        splash.style.transition = 'opacity 0.6s ease';
-        splash.style.opacity = '0';
-        splash.style.pointerEvents = 'none';
-        setTimeout(() => {
-            splash.style.display = 'none';
-            wizardCard.style.opacity = '1';
-            wizardCard.style.pointerEvents = 'all';
-            wizardCard.classList.add('drop-in');
-            wizardCard.addEventListener('animationend', () => wizardCard.classList.remove('drop-in'), { once: true });
-        }, 620);
-    }, 4800);
-
-    goToStep(0);
-
-    // ===== FIREWORKS =====
-    const canvas = document.getElementById('fireworksCanvas');
-const ctx = canvas.getContext('2d');
-let fireworksActive = false,
-    animationId = null,
-    particles = [],
-    fireworksTimeout = null;
-
-function resizeCanvas() { 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight; 
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-class Particle {
-    constructor(x, y, color, velocity, size, life) {
-        Object.assign(this, { x, y, color, velocity, size: size || 3, life: life || 1, decay: 0.008 + Math
-                .random() * 0.015, gravity: 0.05, friction: 0.98 });
-    }
-    update() { 
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
-        this.velocity.y += this.gravity;
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-        this.life -= this.decay;
-        this.size *= 0.998; 
-    }
-    draw() { 
-        ctx.save();
-        ctx.globalAlpha = Math.max(this.life, 0);
-        ctx.fillStyle = this.color;
-        ctx.shadowBlur = 16;
-        ctx.shadowColor = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, Math.max(this.size, 0.5), 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore(); 
-    }
-}
-
-function createExplosion(x, y) {
-    const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#fb923c', '#2dd4bf'];
-    for (let i = 0, count = 80 + Math.floor(Math.random() * 60); i < count; i++) {
-        const angle = Math.random() * Math.PI * 2,
-            speed = 2 + Math.random() * 6;
-        particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)], { 
-            x: Math.cos(angle) * speed * (0.5 + Math.random() * 0.6), 
-            y: Math.sin(angle) * speed * (0.5 + Math.random() * 0.6) 
-        }, 2 + Math.random() * 4, 0.8 + Math.random() * 0.6));
-    }
-}
-
-function launchFirework() { 
-    createExplosion(100 + Math.random() * (canvas.width - 200), 80 + Math.random() * (canvas.height * 0.5)); 
-}
-
-// ---------- MODIFIED: animation loop never stops on its own ----------
-function animateFireworks() {
-    if (!fireworksActive) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-    for (let i = particles.length - 1; i >= 0; i--) { 
-        const p = particles[i];
-        p.update(); 
-        if (p.life <= 0 || p.size < 0.2) particles.splice(i, 1);
-        else { 
-            p.draw();
-            alive = true; 
-        } 
-    }
-    // Always keep the loop going if fireworks are active,
-    // regardless of whether particles exist.
-    animationId = requestAnimationFrame(animateFireworks);
-}
-
-// ---------- MODIFIED: infinite launch loop ----------
-function startFireworks() {
-    if (fireworksActive) return;
-    fireworksActive = true;
-    canvas.style.display = 'block';
-    particles = [];
-    if (animationId) cancelAnimationFrame(animationId);
-
-    // Start the animation loop (it will run continuously)
-    animateFireworks();
-
-    // Define a recursive launch function that never stops
-    function launchLoop() {
-        if (!fireworksActive) return; // stop if we manually deactivate
-        launchFirework(); // launch one firework
-        // Schedule the next launch after a random delay (200–800ms)
-        setTimeout(launchLoop, 200 + Math.random() * 600);
-    }
-
-    // Kick off the first launch
-    launchLoop();
-
-    // REMOVED: burstCount, launched, fireworksTimeout – they're gone!
-}
-
-// ---------- keep stopFireworks for manual use (unchanged) ----------
-function stopFireworks() {
-    fireworksActive = false;
-    if (animationId) { 
-        cancelAnimationFrame(animationId);
-        animationId = null; 
-    }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.style.display = 'none';
-    particles = [];
-    if (fireworksTimeout) { 
-        clearTimeout(fireworksTimeout);
-        fireworksTimeout = null; 
-    }
-}
-
-    // ===== SUBMIT =====
-    submitBtn.addEventListener('click', async () => {
-        saveCurrentData();
-        const d = state.data;
-        const allFilled = d.primary_contact_name && d.business_owner_name && d.contact_email &&
-            d.contact_phone && d.business_name && d.year_established && d.branch_locations &&
-            d.number_of_branches && d.number_of_employees && d.price_range && d.current_platforms &&
-            d.current_star_rating && d.current_total_reviews && d.target_platform &&
-            d.package_selection && d.consent && state.files.logo;
-        if (!allFilled) {
-            statusMsg.className = 'error';
-            statusMsg.textContent = '\u274C Missing required fields. Please go back and complete all sections.';
-            statusMsg.style.display = 'block';
-            return;
-        }
-        submitBtn.disabled = true;
-        submitBtn.textContent = '\u23F3 Submitting...';
-
-        // Helper: convert a File to base64
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve({
-                    name: file.name,
-                    mimeType: file.type,
-                    data: reader.result.split(',')[1]  // strip the data:...;base64, prefix
-                });
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        try {
-            // Build the JSON payload Apps Script expects
-            const payload = { ...d, files: {} };
-
-            if (state.files.logo) {
-                payload.files.logo = await fileToBase64(state.files.logo);
-            }
-            if (state.files.menu && state.files.menu.length > 0) {
-                payload.files.menu = await Promise.all(state.files.menu.map(fileToBase64));
-            }
-            if (state.files.cameraPhoto) {
-                payload.files.cameraPhoto = await fileToBase64(state.files.cameraPhoto);
-            }
-
-            const response = await fetch(ONBOARDING_SCRIPT_URL, {
-                method: 'POST',
-                // Apps Script requires text/plain to avoid CORS preflight
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            if (result.success) {
-                // === NEW: Show welcome overlay ===
-                const customerName = d.primary_contact_name || 'Guest';
-                welcomeName.textContent = customerName;
-                welcomeRefNumber.textContent = result.refNumber || '—';
-                welcomeOverlay.classList.add('show');
-
-                // Hide the status message (optional) – we keep it but it's now behind overlay
-                // We'll still update it for reference
-                statusMsg.className = 'success';
-                statusMsg.textContent = '\uD83C\uDF89 Submitted! Reference: ' + result.refNumber;
-                statusMsg.style.display = 'block';
-                submitBtn.textContent = '\u2705 Submitted!';
-                submitBtn.disabled = true;
-
-                // Start fireworks (if not already)
-                startFireworks();
-
-                // (Optional) disable further interaction with form
-                // but we keep it as is.
-
-            } else throw new Error(result.error || 'Submission failed.');
-        } catch (error) {
-            statusMsg.className = 'error';
-            statusMsg.textContent = '\u274C Error: ' + error.message;
-            statusMsg.style.display = 'block';
-            submitBtn.disabled = false;
-            submitBtn.textContent = '\uD83D\uDE80 Confirm & Submit';
-        }
-    });
-
-    // === NEW: Close welcome overlay (hide it) ===
-    closeWelcomeBtn.addEventListener('click', () => {
-        welcomeOverlay.classList.remove('show');
-        // Optionally, you could also hide the status message or keep it visible.
-    });
-
-    // Also close overlay if user clicks outside the card (optional)
-    welcomeOverlay.addEventListener('click', (e) => {
-        if (e.target === welcomeOverlay) {
-            welcomeOverlay.classList.remove('show');
-        }
-    });
-</script>
 </body>
 </html>
