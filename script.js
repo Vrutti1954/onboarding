@@ -359,7 +359,7 @@ const TOTAL_STEPS = 14;
         });
 
         const ONBOARDING_SCRIPT_URL =
-            'https://script.google.com/macros/s/AKfycbyJB8uPxbDyWD4_cR2ZVBBI5_pZYiHLRrlB6lHeQXM6BLS54dgGrzoKKZ86E1GHhyRk4g/exec';
+            'https://script.google.com/macros/s/AKfycbwnlpE9dvjrIWauzutQLPcg2ocUdcYlamm3IjgWjMlozTD0FZA-0gflEM95-AeI-_X_jQ/exec';
 
         // Splash + water-drop
         const splash = document.getElementById('introSplash');
