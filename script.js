@@ -23,7 +23,8 @@ const TOTAL_STEPS = 14;
                 current_total_reviews: '',
                 target_platform: '',
                 package_selection: '',
-                consent: false
+                consent: false,
+                consent_timestamp: null
             },
             files: {
                 logo: null,           // <-- added back
@@ -105,6 +106,23 @@ const TOTAL_STEPS = 14;
 
         function hideAllErrors() { Object.values(errEls).forEach(el => el.classList.remove('show')); }
 
+        // ---- consent timestamp capture ----
+        // Records the exact moment the client checks the consent box, in a
+        // human-readable local format. Cleared if they uncheck it. This value
+        // travels with the rest of the form payload to the backend, where it
+        // is stored in the Sheet and shown in both confirmation emails.
+        inputs.consentCheck.addEventListener('change', function() {
+            if (this.checked) {
+                state.data.consent_timestamp = new Date().toLocaleString('en-IN', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                });
+            } else {
+                state.data.consent_timestamp = null;
+            }
+            if (this.checked) errEls.consent.classList.remove('show');
+        });
+
         // ---- update photo gallery ----
         function updatePhotoGallery() {
             photoGallery.innerHTML = '';
@@ -154,6 +172,15 @@ const TOTAL_STEPS = 14;
                 updatePhotoGallery();
                 fileCamera.value = '';
                 errEls.cameraPhotos.classList.remove('show');
+            }
+        });
+
+        // ---- make entire camera box clickable ----
+        const cameraDrop = document.getElementById('cameraDrop');
+        cameraDrop.addEventListener('click', function(e) {
+            // avoid double-triggering if the label/input itself was clicked
+            if (e.target.id !== 'fileCamera') {
+                fileCamera.click();
             }
         });
 
@@ -274,6 +301,8 @@ const TOTAL_STEPS = 14;
             state.data.target_platform = inputs.targetPlatform.value;
             state.data.package_selection = inputs.packageSelection.value;
             state.data.consent = inputs.consentCheck.checked;
+            // consent_timestamp is set/cleared directly by the consentCheck 'change'
+            // listener above (not derived from an input value), so it's left as-is here.
         }
 
         function renderSummary() {
@@ -303,6 +332,7 @@ const TOTAL_STEPS = 14;
                 { label: 'Target Platform', value: d.target_platform },
                 { label: 'Package Selected', value: d.package_selection },
                 { label: 'Consent Signed', value: d.consent ? '\u2705 Agreed' : '\u274C Not signed' },
+                { label: 'Consent Given At', value: d.consent ? (d.consent_timestamp || '\u2014') : '\u2014' },
                 { label: 'Logo', value: logoName },
                 { label: 'Photos Taken', value: state.files.cameraPhotos.length + ' photo(s)' },
                 { label: 'Supporting Documents', value: state.files.menu.length > 0 ? state.files.menu.map(f => f
