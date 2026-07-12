@@ -851,49 +851,51 @@
          }
 
          /* --- CONSENT BOX --- */
-         .consent-box {
-             margin-top: 4px;
-             padding: 20px 22px;
-             background: rgba(255, 255, 255, 0.03);
-             border: 1.5px solid rgba(255, 255, 255, 0.07);
-             border-radius: 18px;
-             backdrop-filter: blur(4px);
-         }
-         .consent-title {
-             font-size: 14px;
-             font-weight: 700;
-             color: rgba(255, 255, 255, 0.8);
-             margin-bottom: 10px;
-             letter-spacing: 0.2px;
-         }
-         .consent-text {
-             font-size: 13px;
-             color: rgba(255, 255, 255, 0.4);
-             line-height: 1.7;
-             margin-bottom: 16px;
-         }
-         .consent-check-row {
-             display: flex;
-             align-items: flex-start;
-             gap: 12px;
-             cursor: pointer;
-         }
-         .consent-check-row input[type="checkbox"] {
-             width: 20px;
-             height: 20px;
-             min-width: 20px;
-             margin-top: 1px;
-             accent-color: #aa8851;
-             cursor: pointer;
-         }
-         .consent-check-row span {
-             font-size: 14px;
-             color: rgba(255, 255, 255, 0.7);
-             line-height: 1.5;
-         }
-         .consent-check-row span strong {
-             color: #ffffff;
-         }
+          /* --- CONSENT BOX --- */
+          .consent-box {
+              margin-top: 4px;
+              padding: 20px 22px;
+              background: rgba(255, 255, 255, 0.03);
+              border: 1.5px solid rgba(255, 255, 255, 0.07);
+              border-radius: 18px;
+              backdrop-filter: blur(4px);
+          }
+          .consent-title {
+              font-size: 14px;
+              font-weight: 700;
+              color: rgba(255, 255, 255, 0.8);
+              margin-bottom: 10px;
+              letter-spacing: 0.2px;
+          }
+          .consent-text {
+              font-size: 13px;
+              color: rgba(255, 255, 255, 0.4);
+              line-height: 1.7;
+              margin-bottom: 16px;
+          }
+          .consent-check-row {
+              display: flex;
+              align-items: flex-start;
+              gap: 12px;
+              cursor: pointer;
+          }
+          .consent-check-row input[type="checkbox"] {
+              width: 20px;
+              height: 20px;
+              min-width: 20px;
+              margin-top: 1px;
+              accent-color: #aa8851;
+              cursor: pointer;
+          }
+          .consent-check-row span {
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.7);
+              line-height: 1.5;
+          }
+          .consent-check-row span strong {
+              color: #ffffff;
+          }
+                    
 
          /* ============================================================
             SELECT OVERRIDES
