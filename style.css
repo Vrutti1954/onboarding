@@ -489,6 +489,54 @@
          .drop-zone.optional:hover {
              border-color: rgba(255, 255, 255, 0.12);
          }
+          
+          /* --- CAMERA UPLOAD AREA (match drop-zone style) --- */
+          .camera-upload-area {
+              border: 1.5px dashed rgba(255, 255, 255, 0.08);
+              border-radius: 18px;
+              padding: 24px 20px;
+              text-align: center;
+              background: rgba(255, 255, 255, 0.02);
+              transition: 0.25s ease;
+              backdrop-filter: blur(4px);
+          }
+          .camera-upload-area:hover {
+              border-color: rgba(196, 174, 128, 0.3);
+              background: rgba(255, 255, 255, 0.05);
+          }
+          .camera-upload-area .icon-big {
+              font-size: 30px;
+              display: block;
+              margin-bottom: 4px;
+              opacity: 0.8;
+          }
+          
+          /* Hide the native input completely — the label triggers it */
+          .camera-upload-area input[type="file"] {
+              display: none;
+          }
+          
+          .camera-btn {
+              display: inline-block;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              font-size: 15px;
+              cursor: pointer;
+              margin-top: 2px;
+          }
+          .camera-upload-area:hover .camera-btn {
+              color: #ffffff;
+          }
+          
+          .camera-hint {
+              color: rgba(255, 255, 255, 0.4);
+              font-size: 13px;
+              margin-top: 6px;
+              pointer-events: none;
+          }
+          .camera-hint span {
+              font-weight: 600;
+          }
 
          /* --- SUMMARY / REVIEW (Glass) --- */
          .summary-grid {
