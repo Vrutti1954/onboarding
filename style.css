@@ -100,7 +100,7 @@
     margin-bottom: 1.5rem;
     border: 1px solid #eef2f9;
     border-radius: 10px;
-    background: #ffffff;
+    background: rgb(115, 133, 174);
     padding: 1rem 1.2rem;
     scroll-behavior: smooth;
 }
