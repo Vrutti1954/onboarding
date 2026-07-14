@@ -2,6 +2,7 @@ const TOTAL_STEPS = 14;
         const state = {
             currentStep: 0,
             totalSteps: TOTAL_STEPS,
+            locked: false,
             data: {
                 primary_contact_name: '',
                 primary_contact_title: '',
@@ -51,6 +52,8 @@ const TOTAL_STEPS = 14;
         const photoGallery = document.getElementById('photoGallery');
         const photoCountNum = document.getElementById('photoCountNum');
         const consentBusinessLabel = document.getElementById('consentBusinessLabel');
+        const stepsWrapper = document.getElementById('stepsWrapper');
+        const lockedBanner = document.getElementById('lockedBanner');
 
         // NEW: welcome overlay elements
         const welcomeOverlay = document.getElementById('welcomeOverlay');
@@ -348,6 +351,7 @@ const TOTAL_STEPS = 14;
         }
 
         function goToStep(index) {
+            if (state.locked) return; // form is finalized — no navigation at all
             if (index < 0 || index >= state.totalSteps) return;
             if (index > state.currentStep) {
                 if (!validateStep(state.currentStep)) return;
@@ -378,9 +382,24 @@ const TOTAL_STEPS = 14;
             statusMsg.textContent = '';
         }
 
+        // ---- lock the form after the client hits "Continue" on the
+        // welcome card: no more edits, no more going back. The Back
+        // button is visibly blurred + disabled and a banner explains why.
+        function lockForm() {
+            if (state.locked) return;
+            state.locked = true;
+            prevBtn.disabled = true;
+            prevBtn.classList.add('locked-btn');
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'none';
+            stepsWrapper.classList.add('locked');
+            lockedBanner.classList.add('show');
+        }
+
         nextBtn.addEventListener('click', () => goToStep(state.currentStep + 1));
         prevBtn.addEventListener('click', () => goToStep(state.currentStep - 1));
         document.addEventListener('keydown', e => {
+            if (state.locked) return;
             if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
                 if (state.currentStep === state.totalSteps - 1 && submitBtn.style.display !== 'none') submitBtn
                 .click();
@@ -594,18 +613,24 @@ const TOTAL_STEPS = 14;
             }
         });
 
+        // ---- "Continue" on the welcome card now locks the form for good:
+        // the client lands back on the (already-submitted) review screen,
+        // but can no longer navigate, edit, or go back — matching the
+        // "locked / read-only" behaviour requested.
         closeWelcomeBtn.addEventListener('click', () => {
             welcomeOverlay.classList.remove('show');
+            lockForm();
         });
 
         welcomeOverlay.addEventListener('click', (e) => {
             if (e.target === welcomeOverlay) {
                 welcomeOverlay.classList.remove('show');
+                lockForm();
             }
         });
 
         // ===== SOUNDTRACK =====
-      <!-- ===== WELCOME SOUND – Fixed Web Audio Chime ===== -->
+      /* ===== WELCOME SOUND – Fixed Web Audio Chime ===== */
 
 (function () {
   let soundPlayed = false;
