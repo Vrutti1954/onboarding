@@ -40,6 +40,10 @@
 
     <div class="wizard-card" id="app">
 
+        <div class="locked-banner" id="lockedBanner">
+            &#128274; This submission has been finalized and locked. Please contact us if you need to make changes.
+        </div>
+
         <div class="progress-area">
             <div class="step-indicator">Step <span id="currentStepNum">1</span> / <span id="totalStepsNum">14</span></div>
             <div class="progress-track">
@@ -371,7 +375,6 @@
             </div>
 
             <!-- Step 12: Consent Form -->
-            <!-- Step 12: Consent Form -->
 <div class="step" data-step="12">
     <div class="step-header">
         <div class="step-icon">📝</div>
@@ -397,7 +400,7 @@
                 • Final Approval: You must manually approve each review. By clicking "Post" or "Publish," you confirm that you have read the content and accept full liability for the statements made therein.<br><br>
 
                 Client Responsibility and Liability<br>
-                Post-Approval Liability: Once a generated review is published by you, it is considered "Client-Approved." Raiseron bears no responsibility for the consequences of published content, including but not limited to defamation, copyright infringement, or violations of platform policies (e.g., Google’s Review Guidelines).<br>
+                Post-Approval Liability: Once a generated review is published by you, it is considered "Client-Approved." Raiseron bears no responsibility for the consequences of published content, including but not limited to defamation, copyright infringement, or violations of platform policies (e.g., Google's Review Guidelines).<br>
                 Unread Reviews: It is your responsibility to monitor your notification settings and review queues. Any review that remains unread or unattended to, resulting in negative feedback or lost opportunities, is the Client's sole responsibility.<br><br>
 
                 Client Information and Data Verification<br>
@@ -464,7 +467,7 @@
         </label>
 
         <!-- Error message (hidden by default) -->
-        <div class="field-error" id="errConsent" style="display: none; margin-top: 14px;">
+        <div class="field-error" id="errConsent" style="margin-top: 14px;">
             ⚠️ You must agree to the consent form to proceed.
         </div>
     </div>
