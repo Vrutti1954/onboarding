@@ -13,6 +13,7 @@ const TOTAL_STEPS = 14;
                 business_name: '',
                 website_url: '',
                 year_established: '',
+                product_info: '',
                 branch_locations: '',
                 number_of_branches: '',
                 number_of_employees: '',
@@ -71,6 +72,7 @@ const TOTAL_STEPS = 14;
             businessName: document.getElementById('inputBusinessName'),
             websiteUrl: document.getElementById('inputWebsiteUrl'),
             yearEstablished: document.getElementById('inputYearEstablished'),
+            productInfo: document.getElementById('inputProductInfo'),
             branchLocations: document.getElementById('inputBranchLocations'),
             numberOfBranches: document.getElementById('inputNumberOfBranches'),
             numberOfEmployees: document.getElementById('inputNumberOfEmployees'),
@@ -92,6 +94,7 @@ const TOTAL_STEPS = 14;
             contactPhone: document.getElementById('errContactPhone'),
             businessName: document.getElementById('errBusinessName'),
             yearEstablished: document.getElementById('errYearEstablished'),
+            productInfo: document.getElementById('errProductInfo'),
             branchLocations: document.getElementById('errBranchLocations'),
             numberOfBranches: document.getElementById('errNumberOfBranches'),
             numberOfEmployees: document.getElementById('errNumberOfEmployees'),
@@ -228,6 +231,8 @@ const TOTAL_STEPS = 14;
                     if (!inputs.yearEstablished.value.trim() || yr < 1900 || yr > 2099) { errEls.yearEstablished
                             .classList.add('show');
                         ok = false; }
+                    if (!inputs.productInfo.value.trim()) { errEls.productInfo.classList.add('show');
+                        ok = false; }
                     break;
                 case 4:
                     if (!inputs.branchLocations.value.trim()) { errEls.branchLocations.classList.add('show');
@@ -292,6 +297,7 @@ const TOTAL_STEPS = 14;
             state.data.business_name = inputs.businessName.value.trim();
             state.data.website_url = inputs.websiteUrl.value.trim();
             state.data.year_established = inputs.yearEstablished.value.trim();
+            state.data.product_info = inputs.productInfo.value.trim();
             state.data.branch_locations = inputs.branchLocations.value.trim();
             state.data.number_of_branches = inputs.numberOfBranches.value.trim();
             state.data.number_of_employees = inputs.numberOfEmployees.value.trim();
@@ -322,6 +328,7 @@ const TOTAL_STEPS = 14;
                 { label: 'Business Name', value: d.business_name },
                 { label: 'Website URL', value: d.website_url || '\u2014', full: true },
                 { label: 'Year Established', value: d.year_established },
+                { label: 'About Your Product(s)', value: d.product_info, full: true },
                 { label: 'Branch Locations', value: d.branch_locations, full: true },
                 { label: 'Number of Branches', value: d.number_of_branches },
                 { label: 'Number of Employees', value: d.number_of_employees },
@@ -541,7 +548,7 @@ const TOTAL_STEPS = 14;
             const d = state.data;
             // Logo is optional – only check required fields + camera photos
             const allFilled = d.primary_contact_name && d.business_owner_name && d.contact_email &&
-                d.contact_phone && d.business_name && d.year_established && d.branch_locations &&
+                d.contact_phone && d.business_name && d.year_established && d.product_info && d.branch_locations &&
                 d.number_of_branches && d.number_of_employees && d.price_range && d.current_platforms &&
                 d.current_star_rating && d.current_total_reviews && d.target_platform &&
                 d.package_selection && d.consent &&
