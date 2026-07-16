@@ -1031,7 +1031,7 @@
          .welcome-card {
              max-width: 600px;
              width: 90%;
-             background: linear-gradient(160deg, rgba(26, 33, 82, 0.55), rgba(255, 255, 255, 0.05));
+             background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(26, 33, 82, 0.55));
              border: 1px solid rgba(196, 174, 128, 0.25);
              border-radius: 48px;
              padding: 48px 40px 40px;
