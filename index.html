@@ -46,7 +46,7 @@
         </div>
 
         <div class="progress-area">
-            <div class="step-indicator">Step <span id="currentStepNum">1</span> / <span id="totalStepsNum">14</span></div>
+            <div class="step-indicator">Step <span id="currentStepNum">1</span> / <span id="totalStepsNum">15</span></div>
             <div class="progress-track">
                 <div class="progress-fill" id="progressFill" style="width:0%;"></div>
             </div>
@@ -340,8 +340,42 @@
                 </div>
             </div>
 
-            <!-- Step 11: Attachments — Logo (optional) + Camera (required) + Menu (optional) -->
+            <!-- Step 11: Advance Payment (35%) -->
             <div class="step" data-step="11">
+                <div class="step-header">
+                    <div class="step-icon">&#128181;</div>
+                    <div class="step-title-group">
+                        <div class="step-title">Advance Payment</div>
+                        <div class="step-desc">A 35% advance is required to begin work on your package</div>
+                    </div>
+                </div>
+
+                <div class="consent-box">
+                    <div class="consent-title">35% Advance Payment</div>
+                    <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:16px;">
+                        To begin work on your selected package, a <strong style="color:#ffffff;">35% advance payment</strong> of the total package cost is required upfront, with the remaining balance due as per your service agreement. Please confirm your agreement below and enter the advance amount you will be paying.
+                    </p>
+
+                    <label class="consent-check-row">
+                        <input type="checkbox" id="inputAdvancePaymentAgree" />
+                        <span>
+                            I agree to pay a <strong>35% advance payment</strong> of the total package cost before work begins on <strong id="advancePaymentBusinessLabel">my business</strong>'s account.
+                        </span>
+                    </label>
+                    <div class="field-error" id="errAdvancePaymentAgree" style="margin-top: 14px;">
+                        &#9888;&#65039; Please agree to the 35% advance payment to proceed.
+                    </div>
+                </div>
+
+                <div class="field-group" style="margin-top:20px;">
+                    <label>Advance Amount You're Paying <span class="required-star">*</span></label>
+                    <input type="text" id="inputAdvancePaymentAmount" placeholder="e.g. &#8377;17,500 or $210" inputmode="decimal" />
+                    <div class="field-error" id="errAdvancePaymentAmount">&#9888;&#65039; Please enter the advance amount you are paying.</div>
+                </div>
+            </div>
+
+            <!-- Step 12: Attachments — Logo (optional) + Camera (required) + Menu (optional) -->
+            <div class="step" data-step="12">
                 <div class="step-header">
                     <div class="step-icon">&#128206;</div>
                     <div class="step-title-group">
@@ -381,8 +415,8 @@
                 </div>
             </div>
 
-            <!-- Step 12: Consent Form -->
-<div class="step" data-step="12">
+            <!-- Step 13: Consent Form -->
+<div class="step" data-step="13">
     <div class="step-header">
         <div class="step-icon">📝</div>
         <div class="step-title-group">
@@ -424,6 +458,7 @@
 
                 <h5>4. Fees and Payment</h5>
                 <ul>
+                    <li><strong>35% Advance Payment —</strong> A 35% advance payment of the total package cost is required before work begins, as confirmed by you earlier in this form. The remaining balance is due as per your service agreement.</li>
                     <li><strong>One-Time Setup Fee —</strong> You agree to pay the one-time setup fee as displayed on the website at the time of purchase. This fee is non-refundable except as required by law.</li>
                     <li><strong>No Hidden Charges —</strong> The setup fee is inclusive of the initial onboarding and configuration.</li>
                     <li><strong>Default —</strong> Failure to pay the required fees on time may result in the suspension or termination of your access to the platform.</li>
@@ -469,6 +504,7 @@
                     <li>I have read and understand these Terms and Conditions.</li>
                     <li>I acknowledge that AI-generated reviews require <em>my careful review</em> and I am solely responsible for them.</li>
                     <li>I accept the <em>one-time setup fee</em> as disclosed on the website.</li>
+                    <li>I accept the <em>35% advance payment</em> requirement as confirmed earlier in this form.</li>
                     <li>I am responsible for verifying my data via email.</li>
                     <li>I agree to <em>extra charges</em> if I request changes after work has commenced.</li>
                     <li>I agree to be bound by all terms outlined above.</li>
@@ -492,8 +528,8 @@
     </div>
 </div>
 
-            <!-- Step 13: Review & Submit -->
-            <div class="step" data-step="13">
+            <!-- Step 14: Review & Submit -->
+            <div class="step" data-step="14">
                 <div class="step-header">
                     <div class="step-icon">&#9989;</div>
                     <div class="step-title-group">
