@@ -1,4 +1,4 @@
-const TOTAL_STEPS = 14;
+const TOTAL_STEPS = 15;
         const state = {
             currentStep: 0,
             totalSteps: TOTAL_STEPS,
@@ -25,6 +25,9 @@ const TOTAL_STEPS = 14;
                 current_total_reviews: '',
                 target_platform: '',
                 package_selection: '',
+                advance_payment_agree: false,
+                advance_payment_amount: '',
+                advance_payment_timestamp: null,
                 consent: false,
                 consent_timestamp: null
             },
@@ -53,6 +56,7 @@ const TOTAL_STEPS = 14;
         const photoGallery = document.getElementById('photoGallery');
         const photoCountNum = document.getElementById('photoCountNum');
         const consentBusinessLabel = document.getElementById('consentBusinessLabel');
+        const advancePaymentBusinessLabel = document.getElementById('advancePaymentBusinessLabel');
         const stepsWrapper = document.getElementById('stepsWrapper');
         const lockedBanner = document.getElementById('lockedBanner');
 
@@ -84,6 +88,8 @@ const TOTAL_STEPS = 14;
             currentTotalReviews: document.getElementById('inputCurrentTotalReviews'),
             targetPlatform: document.getElementById('inputTargetPlatform'),
             packageSelection: document.getElementById('inputPackageSelection'),
+            advancePaymentAgree: document.getElementById('inputAdvancePaymentAgree'),
+            advancePaymentAmount: document.getElementById('inputAdvancePaymentAmount'),
             consentCheck: document.getElementById('inputConsentCheck')
         };
 
@@ -104,6 +110,8 @@ const TOTAL_STEPS = 14;
             currentTotalReviews: document.getElementById('errCurrentTotalReviews'),
             targetPlatform: document.getElementById('errTargetPlatform'),
             packageSelection: document.getElementById('errPackageSelection'),
+            advancePaymentAgree: document.getElementById('errAdvancePaymentAgree'),
+            advancePaymentAmount: document.getElementById('errAdvancePaymentAmount'),
             cameraPhotos: document.getElementById('errCameraPhotos'),
             consent: document.getElementById('errConsent')
         };
@@ -127,6 +135,23 @@ const TOTAL_STEPS = 14;
                 state.data.consent_timestamp = null;
             }
             if (this.checked) errEls.consent.classList.remove('show');
+        });
+
+        // ---- advance payment agreement timestamp capture ----
+        // Same pattern as the consent timestamp above: records the exact
+        // moment the client agrees to the 35% advance payment. This travels
+        // with the rest of the payload and is stored in the Sheet + emails
+        // as proof of when the advance payment terms were agreed to.
+        inputs.advancePaymentAgree.addEventListener('change', function() {
+            if (this.checked) {
+                state.data.advance_payment_timestamp = new Date().toLocaleString('en-IN', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                });
+            } else {
+                state.data.advance_payment_timestamp = null;
+            }
+            if (this.checked) errEls.advancePaymentAgree.classList.remove('show');
         });
 
         // ---- update photo gallery ----
@@ -153,7 +178,7 @@ const TOTAL_STEPS = 14;
                 photoGallery.appendChild(thumb);
             });
             photoCountNum.textContent = state.files.cameraPhotos.length;
-            if (state.currentStep === 11) {
+            if (state.currentStep === 12) {
                 if (state.files.cameraPhotos.length > 0) errEls.cameraPhotos.classList.remove('show');
             }
         }
@@ -272,6 +297,17 @@ const TOTAL_STEPS = 14;
                         ok = false; }
                     break;
                 case 11:
+                    // ADVANCE PAYMENT: agreement checkbox + amount both required
+                    if (!inputs.advancePaymentAgree.checked) {
+                        errEls.advancePaymentAgree.classList.add('show');
+                        ok = false;
+                    }
+                    if (!inputs.advancePaymentAmount.value.trim()) {
+                        errEls.advancePaymentAmount.classList.add('show');
+                        ok = false;
+                    }
+                    break;
+                case 12:
                     // CAMERA REQUIRED: at least one photo
                     if (state.files.cameraPhotos.length === 0) {
                         errEls.cameraPhotos.classList.add('show');
@@ -279,7 +315,7 @@ const TOTAL_STEPS = 14;
                     }
                     // Logo is optional — no validation needed
                     break;
-                case 12:
+                case 13:
                     if (!inputs.consentCheck.checked) { errEls.consent.classList.add('show');
                         ok = false; }
                     break;
@@ -309,9 +345,12 @@ const TOTAL_STEPS = 14;
             state.data.current_total_reviews = inputs.currentTotalReviews.value.trim();
             state.data.target_platform = inputs.targetPlatform.value;
             state.data.package_selection = inputs.packageSelection.value;
+            state.data.advance_payment_agree = inputs.advancePaymentAgree.checked;
+            state.data.advance_payment_amount = inputs.advancePaymentAmount.value.trim();
             state.data.consent = inputs.consentCheck.checked;
-            // consent_timestamp is set/cleared directly by the consentCheck 'change'
-            // listener above (not derived from an input value), so it's left as-is here.
+            // consent_timestamp / advance_payment_timestamp are set/cleared directly by
+            // their respective 'change' listeners above (not derived from an input value),
+            // so they're left as-is here.
         }
 
         function renderSummary() {
@@ -341,6 +380,9 @@ const TOTAL_STEPS = 14;
                 { label: 'Total Reviews', value: d.current_total_reviews },
                 { label: 'Target Platform', value: d.target_platform },
                 { label: 'Package Selected', value: d.package_selection },
+                { label: 'Advance Payment Agreed', value: d.advance_payment_agree ? '\u2705 Agreed (35%)' : '\u274C Not agreed' },
+                { label: 'Advance Amount', value: d.advance_payment_amount || '\u2014' },
+                { label: 'Advance Agreed At', value: d.advance_payment_agree ? (d.advance_payment_timestamp || '\u2014') : '\u2014' },
                 { label: 'Consent Signed', value: d.consent ? '\u2705 Agreed' : '\u274C Not signed' },
                 { label: 'Consent Given At', value: d.consent ? (d.consent_timestamp || '\u2014') : '\u2014' },
                 { label: 'Logo', value: logoName },
@@ -363,7 +405,10 @@ const TOTAL_STEPS = 14;
             if (index > state.currentStep) {
                 if (!validateStep(state.currentStep)) return;
                 saveCurrentData();
-                if (state.data.business_name) consentBusinessLabel.textContent = state.data.business_name;
+                if (state.data.business_name) {
+                    consentBusinessLabel.textContent = state.data.business_name;
+                    advancePaymentBusinessLabel.textContent = state.data.business_name;
+                }
             } else {
                 saveCurrentData();
             }
@@ -551,7 +596,7 @@ const TOTAL_STEPS = 14;
                 d.contact_phone && d.business_name && d.year_established && d.product_info && d.branch_locations &&
                 d.number_of_branches && d.number_of_employees && d.price_range && d.current_platforms &&
                 d.current_star_rating && d.current_total_reviews && d.target_platform &&
-                d.package_selection && d.consent &&
+                d.package_selection && d.advance_payment_agree && d.advance_payment_amount && d.consent &&
                 state.files.cameraPhotos.length > 0; // <-- CAMERA REQUIRED
 
             if (!allFilled) {
