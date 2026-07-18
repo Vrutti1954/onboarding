@@ -372,6 +372,20 @@
                     <input type="text" id="inputAdvancePaymentAmount" placeholder="e.g. &#8377;17,500 or $210" inputmode="decimal" />
                     <div class="field-error" id="errAdvancePaymentAmount">&#9888;&#65039; Please enter the advance amount you are paying.</div>
                 </div>
+
+                <div class="field-group" style="margin-top:20px;">
+                    <label>Payment Mode <span class="required-star">*</span></label>
+                    <select id="inputPaymentMode">
+                        <option value="" disabled selected>&#8212; Select a payment mode &#8212;</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Credit/Debit Card">Credit/Debit Card</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="field-error" id="errPaymentMode">&#9888;&#65039; Please select a payment mode.</div>
+                </div>
             </div>
 
             <!-- Step 12: Attachments — Logo (optional) + Camera (required) + Menu (optional) -->
